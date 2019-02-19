@@ -24,7 +24,7 @@ void Client::createSocketAndLogIn()
   int sockfd, n; //n stores the return value from getaddrinfo(), send() and recv()
   struct addrinfo serv_info, *results;
   string portno = "5378";
-  int buffersize = 256;
+  const int buffersize = 256;
   char buffer[buffersize];
 
   sockfd = socket(AF_INET, SOCK_STREAM, 0); //protocol is 0 because it automatically changes based on the type
@@ -49,19 +49,21 @@ void Client::createSocketAndLogIn()
   cout << "Connection to the server 52.58.97.202 with port number " << portno << endl;
 
   //communicate (send and receive) with server (login)
-  n = recv(sockfd, buffer, buffersize, 0);
-  if (n == -1){
-    cout << "error while receiving from socket" << endl;
-    exit(1);
-  }
-  cout << "Connection confirmed." << endl;
   cout << "Client ";
   cin >> buffer;
+  cout << endl;
   n = send(sockfd, buffer, buffersize, 0);
   if (n == -1){
     cout << "error while sending to socket" << endl;
     exit(1);
   }
+  cout << "Server: ";
+  n = recv(sockfd, buffer, buffersize, 0);
+  if (n == -1){
+    cout << "error while receiving from socket" << endl;
+    exit(1);
+  }
+  cout << buffer << endl;
   cout << "Connection terminated." << endl;
   close(sockfd);
   freeaddrinfo(results);
