@@ -24,7 +24,8 @@ void Client::createSocketAndLogIn()
   int sockfd, n; //n stores the return value from getaddrinfo(), send() and recv()
   struct addrinfo serv_info, *results;
   string portno = "5378";
-  char buffer[256];
+  int buffersize = 256;
+  char buffer[buffersize];
 
   sockfd = socket(AF_INET, SOCK_STREAM, 0); //protocol is 0 because it automatically changes based on the type
   if (sockfd < 0) {
@@ -48,20 +49,21 @@ void Client::createSocketAndLogIn()
   cout << "Connection to the server 52.58.97.202 with port number " << portno << endl;
 
   //communicate (send and receive) with server (login)
-  bzero(buffer,256); //populates all 256 elements of buffer array with zero-valued bytes
-  fgets(buffer,255,stdin); // reads a line from the standard input (keyboard) and stores it into buffer until 256 element
-  n = send(sockfd, buffer, strlen(buffer), 0);
-  if (n == -1){
-    cout << "error while sending to socket" << endl;
-    exit(1);
-  }
-  bzero(buffer,256);
-  n = recv(sockfd, buffer, 255, 0);
+  n = recv(sockfd, buffer, buffersize, 0);
   if (n == -1){
     cout << "error while receiving from socket" << endl;
     exit(1);
   }
-  cout << buffer << endl;
+  cout << "Connection confirmed." << endl;
+  cout << "Client ";
+  cin >> buffer;
+  n = send(sockfd, buffer, buffersize, 0);
+  if (n == -1){
+    cout << "error while sending to socket" << endl;
+    exit(1);
+  }
+  cout << "Connection terminated." << endl;
+  close(sockfd);
   freeaddrinfo(results);
 }
 
