@@ -1,4 +1,7 @@
 /**
+ * You don't have to edit anything in this file, but you may inspect it to get a better understanding of how
+ * the program works.
+ *
  * Socket example based on https://stackoverflow.com/questions/28027937/cross-platform-sockets
  */
 
